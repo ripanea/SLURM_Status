@@ -186,10 +186,16 @@ print("%15s\t%15s\t%15s\t%15s\t  %s" % ('NAME', 'TYPE', 'CPU_USAGE', 'MEM_USAGE'
 for line in output.strip("\n").split("\n"):
 
     # Converting node info to dict
-    data = {}    
-    for setting in line.split():
-        info = setting.split("=")
-        data[info[0]] = info[1]
+    data            = {}
+    settings_list   = line.split()
+    last_setting    = None
+    for i in range(len(settings_list)):
+        if "=" in settings_list[i]:
+            info = settings_list[i].split("=")
+            data[info[0]] = info[1]
+            last_setting = info[0]
+        else:
+            data[last_setting] += " " + settings_list[i]
 
     # Obtaining node information
     node        = data["NodeName"] 
